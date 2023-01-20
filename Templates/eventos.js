@@ -9,5 +9,5 @@ const client = require('..');
  * @event
  */
 client.on('', async () => {
-    // Código a ser executado quando o evento é disparado.
+  // Código a ser executado quando o evento é disparado.
 });

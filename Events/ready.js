@@ -1,7 +1,7 @@
-const client = require('..');
 const chalk = require('chalk');
 const ms = require('ms');
 const mongoose = require('mongoose');
+const client = require('..');
 
 /**
  * @event 'ready'
