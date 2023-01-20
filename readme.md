@@ -33,6 +33,5 @@ git clone https://github.com/Enzzzzz/YulRPG.git
 
 - Utilize `cd YulRPG` para entrar na pasta caso tenha dado clone
 
-* Baixe as dependências com `npm install`
-* Copie o `.env.example` para `.env` e configure-o
-* Se você utiliza MongoDB, configure em `./Events/ready.js`
+- Baixe as dependências com `npm install`
+- Copie o `.env.example` para `.env` e configure-o
