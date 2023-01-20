@@ -21,13 +21,9 @@ module.exports = {
         'Você acaba de entrar no meu RPG e ganhou um bonus de 200XP no meu sistema de level Global. \nNão sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
       );
 
-    const already = new Discord.EmbedBuilder()
-      .setTitle(':x: Ops, parece que você já está no meu RPG!')
-      .setDescription(
-        'Não sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
-      );
+    const isNewUser = !user;
 
-    if (!user) {
+    if (isNewUser) {
       const Menu = new Discord.EmbedBuilder()
 
         .setColor('A600FF')
@@ -540,7 +536,13 @@ module.exports = {
           });
         });
     } else {
-      return interaction.reply({ embeds: [already] });
+      const embed = new Discord.EmbedBuilder()
+        .setTitle(':x: Ops, parece que você já está no meu RPG!')
+        .setDescription(
+          'Não sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
+        );
+
+      return interaction.reply({ embeds: [embed] });
     }
   },
 };
