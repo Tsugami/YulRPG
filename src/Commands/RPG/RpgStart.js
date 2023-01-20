@@ -60,10 +60,10 @@ module.exports = {
           fetchReply: true,
         })
         .then(async (message) => {
-          const filtro = (i) => i.user.id === interaction.user.id;
+          const filter = (i) => i.user.id === interaction.user.id;
           const TIME_10_MINUTES = 600_000;
           const coletor = await message.channel.createMessageComponentCollector({
-            filtro,
+            filter,
             time: TIME_10_MINUTES,
           });
 
