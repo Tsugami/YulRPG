@@ -57,6 +57,13 @@ module.exports = {
         new ButtonBuilder().setCustomId('confirmaDemon').setLabel('Confirmar').setStyle(3),
       );
 
+      const classesOptions = rawClasses.map((rpgClass) => ({
+        label: rpgClass.name,
+        description: 'Veja as informações sobre essa classe.',
+        emoji: rpgClass.emoji ?? '❓',
+        value: rpgClass.id,
+      }));
+
       const painel = new Discord.ActionRowBuilder().addComponents(
         new StringSelectMenuBuilder()
           .setCustomId('menu')
@@ -68,36 +75,7 @@ module.exports = {
               emoji: '◀',
               value: 'home',
             },
-            {
-              label: `${rawClasses[0].name}`,
-              description: 'Veja as informações sobre essa classe.',
-              emoji: '🔧',
-              value: `${rawClasses[0].id}`,
-            },
-            {
-              label: `${rawClasses[1].name}`,
-              description: 'Veja as informações sobre essa classe.',
-              emoji: '🎮',
-              value: `${rawClasses[1].id}`,
-            },
-            {
-              label: `${rawClasses[2].name}`,
-              description: 'Veja as informações sobre essa classe.',
-              emoji: '📊',
-              value: `${rawClasses[2].id}`,
-            },
-            {
-              label: `${rawClasses[3].name}`,
-              description: 'Veja as informações sobre essa classe.',
-              emoji: '📊',
-              value: 'paladino',
-            },
-            {
-              label: `${rawClasses[4].name}`,
-              description: 'Veja as informações sobre essa classe.',
-              emoji: '📊',
-              value: `${rawClasses[4].id}`,
-            },
+            ...classesOptions,
           ]),
       );
 
