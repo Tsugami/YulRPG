@@ -15,12 +15,6 @@ module.exports = {
       id: interaction.user.id,
     });
 
-    const Entrou = new Discord.EmbedBuilder()
-      .setTitle('✅ Parabéns!')
-      .setDescription(
-        'Você acaba de entrar no meu RPG e ganhou um bonus de 200XP no meu sistema de level Global. \nNão sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
-      );
-
     const isNewUser = !user;
 
     if (isNewUser) {
@@ -134,226 +128,60 @@ module.exports = {
                   components: [painel],
                 });
               }
+            }
 
-              const customId = collected.customId;
-              if (customId === 'confirmaViking') {
-                const confirmVkn = new Discord.EmbedBuilder()
+            if (collected.isButton() && collected.customId.startsWith('confirm')) {
+              const [_confirm, rpgClassId] = collected.customId.split(':');
+              const rpgClasse = rawClasses.find((rpgClass) => rpgClassId === rpgClass.id);
 
-                  .setTitle('Classe Escolhida com sucesso')
-                  .setColor('A600FF')
-                  .setThumbnail(rawClasses[0].icon)
-                  .setDescription(
-                    'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
-                  )
-                  .addFields({
-                    name: 'VIKING',
-                    value: 'VIKINGZINHO MEU MANO',
-                    inline: false,
-                  })
-                  .setFooter({ text: `© ${client.user.username} 2023 | ...` })
-                  .setTimestamp();
+              await UsersRPG.create({
+                id: interaction.user.id,
+                discordName: interaction.user.username,
+                skill1: rpgClasse.skills[0],
+                skill2: rpgClasse.skills[1],
+                skill3: rpgClasse.skills[2],
+                ult: rpgClasse.ultimate,
+                hpatual: rpgClasse.stats.hp,
+                hpmax: rpgClasse.stats.hp,
+                hpUp: rpgClasse.stats.hpperlevel,
+                dano: rpgClasse.stats.attackdamage,
+                danoUp: rpgClasse.stats.attackdamageperlevel,
+                manaatual: rpgClasse.stats.mp,
+                manamax: rpgClasse.stats.mp,
+                manaUp: rpgClasse.stats.mpperlevel,
+                armor: rpgClasse.stats.armor,
+                armorUp: rpgClasse.stats.armorperlevel,
+                arma1: rpgClasse.weapons[0],
+                arma2: rpgClasse.weapons[1],
+                classe: rpgClasse.name,
+              });
 
-                await UsersRPG.create({
-                  id: interaction.user.id,
-                  discordName: interaction.user.username,
-                  skill1: rawClasses[0].skills[0],
-                  skill2: rawClasses[0].skills[1],
-                  skill3: rawClasses[0].skills[2],
-                  ult: rawClasses[0].ultimate,
-                  hpatual: rawClasses[0].stats.hp,
-                  hpmax: rawClasses[0].stats.hp,
-                  hpUp: rawClasses[0].stats.hpperlevel,
-                  dano: rawClasses[0].stats.attackdamage,
-                  danoUp: rawClasses[0].stats.attackdamageperlevel,
-                  manaatual: rawClasses[0].stats.mp,
-                  manamax: rawClasses[0].stats.mp,
-                  manaUp: rawClasses[0].stats.mpperlevel,
-                  armor: rawClasses[0].stats.armor,
-                  armorUp: rawClasses[0].stats.armorperlevel,
-                  arma1: rawClasses[0].weapons[0],
-                  arma2: rawClasses[0].weapons[1],
-                  classe: rawClasses[0].name,
-                });
+              const congratulationsEmbed = new Discord.EmbedBuilder()
+                .setTitle('✅ Parabéns!')
+                .setDescription(
+                  'Você acaba de entrar no meu RPG e ganhou um bonus de 200XP no meu sistema de level Global. \nNão sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
+                );
 
-                await interaction.editReply({
-                  embeds: [Entrou, confirmVkn],
-                  content: `${interaction.user}`,
-                  components: [],
-                });
-              } else if (customId === 'confirmaArqueiro') {
-                const confirmArq = new Discord.EmbedBuilder()
+              const successEmbed = new Discord.EmbedBuilder()
+                .setTitle('Classe Escolhida com sucesso')
+                .setColor('A600FF')
+                .setThumbnail(rpgClasse.icon)
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
+                )
+                .addFields({
+                  name: rpgClasse.name.toUpperCase(),
+                  value: rpgClasse.name.toUpperCase() + ' MEU MANO',
+                  inline: false,
+                })
+                .setFooter({ text: `© ${client.user.username} 2023 | ...` })
+                .setTimestamp();
 
-                  .setTitle('Classe Escolhida com sucesso')
-                  .setColor('A600FF')
-                  .setThumbnail(`${rawClasses[1].icon}`)
-                  .setDescription(
-                    'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
-                  )
-                  .addFields({
-                    name: 'ARQUEIRO',
-                    value: 'ARQUEIROZINHO MEU MANO',
-                    inline: false,
-                  })
-                  .setFooter({ text: `© ${client.user.username} 2023 | ...` })
-                  .setTimestamp();
-
-                await UsersRPG.create({
-                  id: interaction.user.id,
-                  discordName: interaction.user.username,
-                  skill1: rawClasses[1].skills[0],
-                  skill2: rawClasses[1].skills[1],
-                  skill3: rawClasses[1].skills[2],
-                  ult: rawClasses[1].ultimate,
-                  hpatual: rawClasses[1].stats.hp,
-                  hpmax: rawClasses[1].stats.hp,
-                  hpUp: rawClasses[1].stats.hpperlevel,
-                  dano: rawClasses[1].stats.attackdamage,
-                  danoUp: rawClasses[1].stats.attackdamageperlevel,
-                  manaatual: rawClasses[1].stats.mp,
-                  manamax: rawClasses[1].stats.mp,
-                  manaUp: rawClasses[1].stats.mpperlevel,
-                  armor: rawClasses[1].stats.armor,
-                  armorUp: rawClasses[1].stats.armorperlevel,
-                  arma1: rawClasses[1].weapons[0],
-                  classe: rawClasses[1].name,
-                });
-
-                await interaction.editReply({
-                  embeds: [Entrou, confirmArq],
-                  content: `${interaction.user}`,
-                  components: [],
-                });
-              } else if (customId === 'confirmaSamurai') {
-                const confirmSam = new Discord.EmbedBuilder()
-
-                  .setTitle('Classe Escolhida com sucesso')
-                  .setColor('A600FF')
-                  .setThumbnail(`${rawClasses[2].icon}`)
-                  .setDescription(
-                    'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
-                  )
-                  .addFields({
-                    name: 'SAMURAI',
-                    value: 'SAMURAIZINHO MEU MANO',
-                    inline: false,
-                  })
-                  .setFooter({ text: `© ${client.user.username} 2023 | ...` })
-                  .setTimestamp();
-
-                await UsersRPG.create({
-                  id: interaction.user.id,
-                  discordName: interaction.user.username,
-                  skill1: rawClasses[2].skills[0],
-                  skill2: rawClasses[2].skills[1],
-                  skill3: rawClasses[2].skills[2],
-                  ult: rawClasses[2].ultimate,
-                  hpatual: rawClasses[2].stats.hp,
-                  hpmax: rawClasses[2].stats.hp,
-                  hpUp: rawClasses[2].stats.hpperlevel,
-                  dano: rawClasses[2].stats.attackdamage,
-                  danoUp: rawClasses[2].stats.attackdamageperlevel,
-                  manaatual: rawClasses[2].stats.mp,
-                  manamax: rawClasses[2].stats.mp,
-                  manaUp: rawClasses[2].stats.mpperlevel,
-                  armor: rawClasses[2].stats.armor,
-                  armorUp: rawClasses[2].stats.armorperlevel,
-                  arma1: rawClasses[2].weapons[0],
-                  classe: rawClasses[2].name,
-                });
-
-                await interaction.editReply({
-                  embeds: [Entrou, confirmSam],
-                  content: `${interaction.user}`,
-                  components: [],
-                });
-              } else if (customId === 'confirmaPaladin') {
-                const confirmPal = new Discord.EmbedBuilder()
-
-                  .setTitle('Classe Escolhida com sucesso')
-                  .setColor('A600FF')
-                  .setThumbnail(`${rawClasses[3].icon}`)
-                  .setDescription(
-                    'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
-                  )
-                  .addFields({
-                    name: 'PALADINO',
-                    value: 'PALADINOZINHO MEU MANO',
-                    inline: false,
-                  })
-                  .setFooter({ text: `© ${client.user.username} 2023 | ...` })
-                  .setTimestamp();
-
-                await UsersRPG.create({
-                  id: interaction.user.id,
-                  discordName: interaction.user.username,
-                  skill1: rawClasses[3].skills[0],
-                  skill2: rawClasses[3].skills[1],
-                  skill3: rawClasses[3].skills[2],
-                  ult: rawClasses[3].ultimate,
-                  hpatual: rawClasses[3].stats.hp,
-                  hpmax: rawClasses[3].stats.hp,
-                  hpUp: rawClasses[3].stats.hpperlevel,
-                  dano: rawClasses[3].stats.attackdamage,
-                  danoUp: rawClasses[3].stats.attackdamageperlevel,
-                  manaatual: rawClasses[3].stats.mp,
-                  manamax: rawClasses[3].stats.mp,
-                  manaUp: rawClasses[3].stats.mpperlevel,
-                  armor: rawClasses[3].stats.armor,
-                  armorUp: rawClasses[3].stats.armorperlevel,
-                  arma1: rawClasses[3].weapons[0],
-                  arma2: rawClasses[3].weapons[1],
-                  classe: rawClasses[3].name,
-                });
-
-                await interaction.editReply({
-                  embeds: [Entrou, confirmPal],
-                  content: `${interaction.user}`,
-                  components: [],
-                });
-              } else if (customId === 'confirmaDemon') {
-                const confirmDmn = new Discord.EmbedBuilder()
-
-                  .setTitle('Classe Escolhida com sucesso')
-                  .setColor('A600FF')
-                  .setThumbnail(`${rawClasses[4].icon}`)
-                  .setDescription(
-                    'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
-                  )
-                  .addFields({
-                    name: 'DEMON',
-                    value: 'DEMONZINHO MEU MANO',
-                    inline: false,
-                  })
-                  .setFooter({ text: `© ${client.user.username} 2023 | ...` })
-                  .setTimestamp();
-
-                await UsersRPG.create({
-                  id: interaction.user.id,
-                  discordName: interaction.user.username,
-                  skill1: rawClasses[4].skills[0],
-                  skill2: rawClasses[4].skills[1],
-                  skill3: rawClasses[4].skills[2],
-                  ult: rawClasses[4].ultimate,
-                  hpatual: rawClasses[4].stats.hp,
-                  hpmax: rawClasses[4].stats.hp,
-                  hpUp: rawClasses[4].stats.hpperlevel,
-                  dano: rawClasses[4].stats.attackdamage,
-                  danoUp: rawClasses[4].stats.attackdamageperlevel,
-                  manaatual: rawClasses[4].stats.mp,
-                  manamax: rawClasses[4].stats.mp,
-                  manaUp: rawClasses[4].stats.mpperlevel,
-                  armor: rawClasses[4].stats.armor,
-                  armorUp: rawClasses[4].stats.armorperlevel,
-                  arma1: rawClasses[4].weapons[0],
-                  classe: rawClasses[4].name,
-                });
-
-                await interaction.editReply({
-                  embeds: [Entrou, confirmDmn],
-                  content: `${interaction.user}`,
-                  components: [],
-                });
-              }
+              await interaction.editReply({
+                embeds: [congratulationsEmbed, successEmbed],
+                content: `${interaction.user}`,
+                components: [],
+              });
             }
           });
         });
