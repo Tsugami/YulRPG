@@ -2,8 +2,9 @@
   "name": "bot",
   "version": "1.0.0",
   "description": "Base em slash v14.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
