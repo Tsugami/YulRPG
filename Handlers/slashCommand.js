@@ -36,7 +36,9 @@ module.exports = (client) => {
         description: slashCommand.description,
         type: slashCommand.type,
         options: slashCommand.options ? slashCommand.options : null,
-        default_permission: slashCommand.default_permission ? slashCommand.default_permission : null,
+        default_permission: slashCommand.default_permission
+          ? slashCommand.default_permission
+          : null,
         default_member_permissions: slashCommand.default_member_permissions
           ? PermissionsBitField.resolve(slashCommand.default_member_permissions).toString()
           : null,
@@ -50,9 +52,14 @@ module.exports = (client) => {
 
   (async () => {
     try {
-      await rest.put(process.env.GUILD_ID ? Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID) : Routes.applicationCommands(CLIENT_ID), {
-        body: slashCommands,
-      });
+      await rest.put(
+        process.env.GUILD_ID
+          ? Routes.applicationGuildCommands(CLIENT_ID, process.env.GUILD_ID)
+          : Routes.applicationCommands(CLIENT_ID),
+        {
+          body: slashCommands,
+        },
+      );
       console.log(chalk.yellow('Comandos • Ok'));
     } catch (error) {
       console.log(error);

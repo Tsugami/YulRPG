@@ -15,12 +15,24 @@ client.on('interactionCreate', async (interaction) => {
   if (!slashCommand) return client.slashCommands.delete(interaction.commandName);
   try {
     if (slashCommand.userPerms || slashCommand.botPerms) {
-      if (!interaction.memberPermissions.has(PermissionsBitField.resolve(slashCommand.userPerms || []))) {
-        const userPerms = new EmbedBuilder().setDescription(`Você não possui a permissão \`${slashCommand.userPerms}\``).setColor('Red');
+      if (
+        !interaction.memberPermissions.has(
+          PermissionsBitField.resolve(slashCommand.userPerms || []),
+        )
+      ) {
+        const userPerms = new EmbedBuilder()
+          .setDescription(`Você não possui a permissão \`${slashCommand.userPerms}\``)
+          .setColor('Red');
         return interaction.reply({ embeds: [userPerms], ephemeral: true });
       }
-      if (!interaction.guild.members.cache.get(client.user.id).permissions.has(PermissionsBitField.resolve(slashCommand.botPerms || []))) {
-        const botPerms = new EmbedBuilder().setDescription(`Eu não possuo a permissão \`${slashCommand.botPerms}\``).setColor('Red');
+      if (
+        !interaction.guild.members.cache
+          .get(client.user.id)
+          .permissions.has(PermissionsBitField.resolve(slashCommand.botPerms || []))
+      ) {
+        const botPerms = new EmbedBuilder()
+          .setDescription(`Eu não possuo a permissão \`${slashCommand.botPerms}\``)
+          .setColor('Red');
         return interaction.reply({ embeds: [botPerms], ephemeral: true });
       }
     }

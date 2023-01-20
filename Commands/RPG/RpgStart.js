@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
-const mongoose = require('mongoose');
-const { StringSelectMenuBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { StringSelectMenuBuilder, ButtonBuilder } = require('discord.js');
 
-const { Schema } = mongoose;
 const { ApplicationCommandType } = require('discord.js');
-const UsersGlobal = require('../../Schemas/UserGlobal');
 const UsersRPG = require('../../Schemas/UserRPG');
 const rawClasses = require('../../RawsRPG/classes.json');
 
@@ -20,108 +17,107 @@ module.exports = {
 
     const Entrou = new Discord.EmbedBuilder()
       .setTitle('✅ Parabéns!')
-      .setDescription('Você acaba de entrar no meu RPG e ganhou um bonus de 200XP no meu sistema de level Global. \nNão sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.');
+      .setDescription(
+        'Você acaba de entrar no meu RPG e ganhou um bonus de 200XP no meu sistema de level Global. \nNão sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
+      );
 
     const already = new Discord.EmbedBuilder()
       .setTitle(':x: Ops, parece que você já está no meu RPG!')
-      .setDescription('Não sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.');
+      .setDescription(
+        'Não sabe como jogar o RPG? acesse: https://yulbot.vercel.app/rpg ou digite /help.',
+      );
 
     if (!user) {
       const Menu = new Discord.EmbedBuilder()
 
         .setColor('A600FF')
-        .setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL({ dynamic: true }) })
-        .setDescription('Selecione a sua Classe para ver suas informações e então clique em confirmar.')
+        .setAuthor({
+          name: client.user.username,
+          iconURL: client.user.displayAvatarURL({ dynamic: true }),
+        })
+        .setDescription(
+          'Selecione a sua Classe para ver suas informações e então clique em confirmar.',
+        )
         .setFooter({ text: `© ${client.user.username} 2023 | ...` })
         .setTimestamp();
 
-      const VikingBtn = new Discord.ActionRowBuilder()
-        .addComponents(
-          new Discord.ButtonBuilder()
-            .setCustomId('confirmaViking')
-            .setLabel('Confirmar')
-            .setStyle(3),
-        );
+      const VikingBtn = new Discord.ActionRowBuilder().addComponents(
+        new Discord.ButtonBuilder().setCustomId('confirmaViking').setLabel('Confirmar').setStyle(3),
+      );
 
-      const ArqueiroBtn = new Discord.ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('confirmaArqueiro')
-            .setLabel('Confirmar')
-            .setStyle(3),
-        );
+      const ArqueiroBtn = new Discord.ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('confirmaArqueiro').setLabel('Confirmar').setStyle(3),
+      );
 
-      const SamuraiBtn = new Discord.ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('confirmaSamurai')
-            .setLabel('Confirmar')
-            .setStyle(3),
-        );
+      const SamuraiBtn = new Discord.ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('confirmaSamurai').setLabel('Confirmar').setStyle(3),
+      );
 
-      const PaladinBtn = new Discord.ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('confirmaPaladin')
-            .setLabel('Confirmar')
-            .setStyle(3),
-        );
+      const PaladinBtn = new Discord.ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('confirmaPaladin').setLabel('Confirmar').setStyle(3),
+      );
 
-      const DemonBtn = new Discord.ActionRowBuilder()
-        .addComponents(
-          new ButtonBuilder()
-            .setCustomId('confirmaDemon')
-            .setLabel('Confirmar')
-            .setStyle(3),
-        );
+      const DemonBtn = new Discord.ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('confirmaDemon').setLabel('Confirmar').setStyle(3),
+      );
 
-      const painel = new Discord.ActionRowBuilder().addComponents(new StringSelectMenuBuilder()
-        .setCustomId('menu')
-        .setPlaceholder('Selecione uma classe abaixo.')
-        .addOptions([{
-          label: 'Seleção de Classe',
-          description: 'Volte para a pagina inicial.',
-          emoji: '◀',
-          value: 'home',
-        },
-        {
-          label: `${rawClasses[0].name}`,
-          description: 'Veja as informações sobre essa classe.',
-          emoji: '🔧',
-          value: `${rawClasses[0].id}`,
-        },
-        {
-          label: `${rawClasses[1].name}`,
-          description: 'Veja as informações sobre essa classe.',
-          emoji: '🎮',
-          value: `${rawClasses[1].id}`,
-        },
-        {
-          label: `${rawClasses[2].name}`,
-          description: 'Veja as informações sobre essa classe.',
-          emoji: '📊',
-          value: `${rawClasses[2].id}`,
-        },
-        {
-          label: `${rawClasses[3].name}`,
-          description: 'Veja as informações sobre essa classe.',
-          emoji: '📊',
-          value: 'paladino',
-        },
-        {
-          label: `${rawClasses[4].name}`,
-          description: 'Veja as informações sobre essa classe.',
-          emoji: '📊',
-          value: `${rawClasses[4].id}`,
-        },
-        ]));
+      const painel = new Discord.ActionRowBuilder().addComponents(
+        new StringSelectMenuBuilder()
+          .setCustomId('menu')
+          .setPlaceholder('Selecione uma classe abaixo.')
+          .addOptions([
+            {
+              label: 'Seleção de Classe',
+              description: 'Volte para a pagina inicial.',
+              emoji: '◀',
+              value: 'home',
+            },
+            {
+              label: `${rawClasses[0].name}`,
+              description: 'Veja as informações sobre essa classe.',
+              emoji: '🔧',
+              value: `${rawClasses[0].id}`,
+            },
+            {
+              label: `${rawClasses[1].name}`,
+              description: 'Veja as informações sobre essa classe.',
+              emoji: '🎮',
+              value: `${rawClasses[1].id}`,
+            },
+            {
+              label: `${rawClasses[2].name}`,
+              description: 'Veja as informações sobre essa classe.',
+              emoji: '📊',
+              value: `${rawClasses[2].id}`,
+            },
+            {
+              label: `${rawClasses[3].name}`,
+              description: 'Veja as informações sobre essa classe.',
+              emoji: '📊',
+              value: 'paladino',
+            },
+            {
+              label: `${rawClasses[4].name}`,
+              description: 'Veja as informações sobre essa classe.',
+              emoji: '📊',
+              value: `${rawClasses[4].id}`,
+            },
+          ]),
+      );
 
-      await interaction.reply({
-        embeds: [Menu], content: `${interaction.user}`, components: [painel], fetchReply: true,
-      })
+      await interaction
+        .reply({
+          embeds: [Menu],
+          content: `${interaction.user}`,
+          components: [painel],
+          fetchReply: true,
+        })
         .then(async (message) => {
           const filtro = (i) => i.user.id === interaction.user.id;
-          const coletor = await message.channel.createMessageComponentCollector({ filtro, time: 600000 });
+          const coletor = await message.channel.createMessageComponentCollector({
+            filtro,
+            time: 600000,
+          });
 
           coletor.on('collect', async (collected) => {
             if (collected.isSelectMenu()) {
@@ -129,7 +125,11 @@ module.exports = {
               collected.deferUpdate();
 
               if (valor === 'home') {
-                interaction.editReply({ embeds: [Menu], content: `${interaction.user}`, components: [painel] });
+                interaction.editReply({
+                  embeds: [Menu],
+                  content: `${interaction.user}`,
+                  components: [painel],
+                });
               } else if (valor === rawClasses[0].id) {
                 const Viking = new Discord.EmbedBuilder()
 
@@ -162,7 +162,11 @@ module.exports = {
                   .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                   .setTimestamp();
 
-                await interaction.editReply({ embeds: [Viking], content: `${interaction.user}`, components: [painel, VikingBtn] });
+                await interaction.editReply({
+                  embeds: [Viking],
+                  content: `${interaction.user}`,
+                  components: [painel, VikingBtn],
+                });
               } else if (valor === rawClasses[1].id) {
                 const Arqueiro = new Discord.EmbedBuilder()
 
@@ -195,7 +199,11 @@ module.exports = {
                   .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                   .setTimestamp();
 
-                await interaction.editReply({ embeds: [Arqueiro], content: `${interaction.user}`, components: [painel, ArqueiroBtn] });
+                await interaction.editReply({
+                  embeds: [Arqueiro],
+                  content: `${interaction.user}`,
+                  components: [painel, ArqueiroBtn],
+                });
               } else if (valor === rawClasses[2].id) {
                 const Samurai = new Discord.EmbedBuilder()
 
@@ -228,7 +236,11 @@ module.exports = {
                   .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                   .setTimestamp();
 
-                await interaction.editReply({ embeds: [Samurai], content: `${interaction.user}`, components: [painel, SamuraiBtn] });
+                await interaction.editReply({
+                  embeds: [Samurai],
+                  content: `${interaction.user}`,
+                  components: [painel, SamuraiBtn],
+                });
               } else if (valor === rawClasses[3].id) {
                 const Paladino = new Discord.EmbedBuilder()
 
@@ -261,7 +273,11 @@ module.exports = {
                   .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                   .setTimestamp();
 
-                await interaction.editReply({ embeds: [Paladino], content: `${interaction.user}`, components: [painel, PaladinBtn] });
+                await interaction.editReply({
+                  embeds: [Paladino],
+                  content: `${interaction.user}`,
+                  components: [painel, PaladinBtn],
+                });
               } else if (valor === rawClasses[4].id) {
                 const DemonS = new Discord.EmbedBuilder()
 
@@ -294,7 +310,11 @@ module.exports = {
                   .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                   .setTimestamp();
 
-                await interaction.editReply({ embeds: [DemonS], content: `${interaction.user}`, components: [painel, DemonBtn] });
+                await interaction.editReply({
+                  embeds: [DemonS],
+                  content: `${interaction.user}`,
+                  components: [painel, DemonBtn],
+                });
               }
             }
 
@@ -305,14 +325,14 @@ module.exports = {
                 .setTitle('Classe Escolhida com sucesso')
                 .setColor('A600FF')
                 .setThumbnail(rawClasses[0].icon)
-                .setDescription('Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar')
-                .addFields(
-                  {
-                    name: 'VIKING',
-                    value: 'VIKINGZINHO MEU MANO',
-                    inline: false,
-                  },
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
                 )
+                .addFields({
+                  name: 'VIKING',
+                  value: 'VIKINGZINHO MEU MANO',
+                  inline: false,
+                })
                 .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                 .setTimestamp();
 
@@ -338,21 +358,25 @@ module.exports = {
                 classe: rawClasses[0].name,
               });
 
-              await interaction.editReply({ embeds: [Entrou, confirmVkn], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [Entrou, confirmVkn],
+                content: `${interaction.user}`,
+                components: [],
+              });
             } else if (valor === 'confirmaArqueiro') {
               const confirmArq = new Discord.EmbedBuilder()
 
                 .setTitle('Classe Escolhida com sucesso')
                 .setColor('A600FF')
                 .setThumbnail(`${rawClasses[1].icon}`)
-                .setDescription('Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar')
-                .addFields(
-                  {
-                    name: 'ARQUEIRO',
-                    value: 'ARQUEIROZINHO MEU MANO',
-                    inline: false,
-                  },
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
                 )
+                .addFields({
+                  name: 'ARQUEIRO',
+                  value: 'ARQUEIROZINHO MEU MANO',
+                  inline: false,
+                })
                 .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                 .setTimestamp();
 
@@ -377,21 +401,25 @@ module.exports = {
                 classe: rawClasses[1].name,
               });
 
-              await interaction.editReply({ embeds: [Entrou, confirmArq], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [Entrou, confirmArq],
+                content: `${interaction.user}`,
+                components: [],
+              });
             } else if (valor === 'confirmaSamurai') {
               const confirmSam = new Discord.EmbedBuilder()
 
                 .setTitle('Classe Escolhida com sucesso')
                 .setColor('A600FF')
                 .setThumbnail(`${rawClasses[2].icon}`)
-                .setDescription('Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar')
-                .addFields(
-                  {
-                    name: 'SAMURAI',
-                    value: 'SAMURAIZINHO MEU MANO',
-                    inline: false,
-                  },
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
                 )
+                .addFields({
+                  name: 'SAMURAI',
+                  value: 'SAMURAIZINHO MEU MANO',
+                  inline: false,
+                })
                 .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                 .setTimestamp();
 
@@ -416,21 +444,25 @@ module.exports = {
                 classe: rawClasses[2].name,
               });
 
-              await interaction.editReply({ embeds: [Entrou, confirmSam], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [Entrou, confirmSam],
+                content: `${interaction.user}`,
+                components: [],
+              });
             } else if (valor === 'confirmaPaladin') {
               const confirmPal = new Discord.EmbedBuilder()
 
                 .setTitle('Classe Escolhida com sucesso')
                 .setColor('A600FF')
                 .setThumbnail(`${rawClasses[3].icon}`)
-                .setDescription('Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar')
-                .addFields(
-                  {
-                    name: 'PALADINO',
-                    value: 'PALADINOZINHO MEU MANO',
-                    inline: false,
-                  },
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
                 )
+                .addFields({
+                  name: 'PALADINO',
+                  value: 'PALADINOZINHO MEU MANO',
+                  inline: false,
+                })
                 .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                 .setTimestamp();
 
@@ -456,21 +488,25 @@ module.exports = {
                 classe: rawClasses[3].name,
               });
 
-              await interaction.editReply({ embeds: [Entrou, confirmPal], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [Entrou, confirmPal],
+                content: `${interaction.user}`,
+                components: [],
+              });
             } else if (valor === 'confirmaDemon') {
               const confirmDmn = new Discord.EmbedBuilder()
 
                 .setTitle('Classe Escolhida com sucesso')
                 .setColor('A600FF')
                 .setThumbnail(`${rawClasses[4].icon}`)
-                .setDescription('Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar')
-                .addFields(
-                  {
-                    name: 'DEMON',
-                    value: 'DEMONZINHO MEU MANO',
-                    inline: false,
-                  },
+                .setDescription(
+                  'Você escolheu sua classe com sucesso! Para começar a jogar digite /Jogar',
                 )
+                .addFields({
+                  name: 'DEMON',
+                  value: 'DEMONZINHO MEU MANO',
+                  inline: false,
+                })
                 .setFooter({ text: `© ${client.user.username} 2023 | ...` })
                 .setTimestamp();
 
@@ -495,7 +531,11 @@ module.exports = {
                 classe: rawClasses[4].name,
               });
 
-              await interaction.editReply({ embeds: [Entrou, confirmDmn], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [Entrou, confirmDmn],
+                content: `${interaction.user}`,
+                components: [],
+              });
             }
           });
         });

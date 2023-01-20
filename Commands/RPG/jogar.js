@@ -1,9 +1,6 @@
 const Discord = require('discord.js');
-const mongoose = require('mongoose');
 
-const { Schema } = mongoose;
-const { ActionRowBuilder, ButtonBuilder, ApplicationCommandType } = require('discord.js');
-const UsersGlobal = require('../../Schemas/UserGlobal');
+const { ApplicationCommandType } = require('discord.js');
 const UsersRPG = require('../../Schemas/UserRPG');
 const rawMonstros = require('../../RawsRPG/monstros.json');
 const RpgStats = require('../../Schemas/RPGstats');
@@ -20,7 +17,9 @@ module.exports = {
 
     const Morto = new Discord.EmbedBuilder()
       .setTitle(':skull: Você está morto!')
-      .setDescription('Você morreu para um [ x ] level [ x ] e não pode lutar agora, você deve estar vivo para jogar novamente!');
+      .setDescription(
+        'Você morreu para um [ x ] level [ x ] e não pode lutar agora, você deve estar vivo para jogar novamente!',
+      );
 
     const unregistred = new Discord.EmbedBuilder()
       .setTitle(':x: Ops, você não está registrado no meu RPG!')
@@ -34,43 +33,22 @@ module.exports = {
       return interaction.reply({ embeds: [Morto] });
     }
 
-    const Lutar = new Discord.ActionRowBuilder()
-      .addComponents(
-        new Discord.ButtonBuilder()
-          .setCustomId('lutar')
-          .setLabel('Lutar!')
-          .setStyle(3),
-        new Discord.ButtonBuilder()
-          .setCustomId('fugir')
-          .setLabel('Fugir')
-          .setStyle(4),
-      );
+    const Lutar = new Discord.ActionRowBuilder().addComponents(
+      new Discord.ButtonBuilder().setCustomId('lutar').setLabel('Lutar!').setStyle(3),
+      new Discord.ButtonBuilder().setCustomId('fugir').setLabel('Fugir').setStyle(4),
+    );
 
-    const lutando = new Discord.ActionRowBuilder()
-      .addComponents(
-        new Discord.ButtonBuilder()
-          .setCustomId('ataque')
-          .setLabel('Ataque')
-          .setStyle(2),
-        new Discord.ButtonBuilder()
-          .setCustomId('skill1')
-          .setLabel(`${user.skill1}`)
-          .setStyle(1),
-        new Discord.ButtonBuilder()
-          .setCustomId('skill2')
-          .setLabel(`${user.skill2}`)
-          .setStyle(1),
-        new Discord.ButtonBuilder()
-          .setCustomId('skill3')
-          .setLabel(`${user.skill3}`)
-          .setStyle(1),
-        new Discord.ButtonBuilder()
-          .setCustomId('ult')
-          .setLabel(`(ULT) ${user.ult}`)
-          .setStyle(1)
-          .setDisabled(true),
-
-      );
+    const lutando = new Discord.ActionRowBuilder().addComponents(
+      new Discord.ButtonBuilder().setCustomId('ataque').setLabel('Ataque').setStyle(2),
+      new Discord.ButtonBuilder().setCustomId('skill1').setLabel(`${user.skill1}`).setStyle(1),
+      new Discord.ButtonBuilder().setCustomId('skill2').setLabel(`${user.skill2}`).setStyle(1),
+      new Discord.ButtonBuilder().setCustomId('skill3').setLabel(`${user.skill3}`).setStyle(1),
+      new Discord.ButtonBuilder()
+        .setCustomId('ult')
+        .setLabel(`(ULT) ${user.ult}`)
+        .setStyle(1)
+        .setDisabled(true),
+    );
 
     const monstroInfo = rawMonstros[Math.floor(Math.random() * rawMonstros.length)];
 
@@ -79,24 +57,35 @@ module.exports = {
     const multiplicadorLevel = Math.floor(Math.random() * 10) + 1;
 
     const monstroLevel = multiplicadorLevel;
-    const monstroHpMax = monstroInfo.stats.hp + (monstroInfo.stats.hpPL * multiplicadorLevel);
-    let monstroHpAtual = monstroInfo.stats.hp + (monstroInfo.stats.hpPL * multiplicadorLevel);
-    let monstroArmor = monstroInfo.stats.armor + (monstroInfo.stats.armorPL * multiplicadorLevel);
-    const monstroDano = monstroInfo.stats.dano + (monstroInfo.stats.danoPL * multiplicadorLevel);
+    const monstroHpMax = monstroInfo.stats.hp + monstroInfo.stats.hpPL * multiplicadorLevel;
+    let monstroHpAtual = monstroInfo.stats.hp + monstroInfo.stats.hpPL * multiplicadorLevel;
+    let monstroArmor = monstroInfo.stats.armor + monstroInfo.stats.armorPL * multiplicadorLevel;
+    const monstroDano = monstroInfo.stats.dano + monstroInfo.stats.danoPL * multiplicadorLevel;
 
     const monstroEncontrado = monstroInfo.name;
 
-    const hpMonstro100 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square:';
-    const hpMonstro90 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square:';
-    const hpMonstro80 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square:';
-    const hpMonstro70 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro60 = ':red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro50 = ':red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro40 = ':red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro30 = ':red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro20 = ':red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro10 = ':red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpMonstro0 = ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro100 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square:';
+    const hpMonstro90 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square:';
+    const hpMonstro80 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square:';
+    const hpMonstro70 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro60 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro50 =
+      ':red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro40 =
+      ':red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro30 =
+      ':red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro20 =
+      ':red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro10 =
+      ':red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpMonstro0 =
+      ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
 
     // PLAYER STATS
 
@@ -106,29 +95,51 @@ module.exports = {
     const playerManaMax = user.manamax;
     let playerArmor = user.armor;
 
-    const hpPlayer100 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square:';
-    const hpPlayer90 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square:';
-    const hpPlayer80 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square:';
-    const hpPlayer70 = ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer60 = ':red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer50 = ':red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer40 = ':red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer30 = ':red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer20 = ':red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer10 = ':red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const hpPlayer0 = ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer100 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square:';
+    const hpPlayer90 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square:';
+    const hpPlayer80 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square:';
+    const hpPlayer70 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer60 =
+      ':red_square::red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer50 =
+      ':red_square::red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer40 =
+      ':red_square::red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer30 =
+      ':red_square::red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer20 =
+      ':red_square::red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer10 =
+      ':red_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const hpPlayer0 =
+      ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
 
-    const manaPlayer100 = ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square:';
-    const manaPlayer90 = ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square:';
-    const manaPlayer80 = ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square:';
-    const manaPlayer70 = ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer60 = ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer50 = ':blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer40 = ':blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer30 = ':blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer20 = ':blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer10 = ':blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
-    const manaPlayer0 = ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer100 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square:';
+    const manaPlayer90 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square:';
+    const manaPlayer80 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square:';
+    const manaPlayer70 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer60 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer50 =
+      ':blue_square::blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer40 =
+      ':blue_square::blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer30 =
+      ':blue_square::blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer20 =
+      ':blue_square::blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer10 =
+      ':blue_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
+    const manaPlayer0 =
+      ':white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square::white_large_square:';
 
     xp = Math.floor(Math.random() * 20) + 1;
     moeda = Math.floor(Math.random() * 20) + 1;
@@ -141,25 +152,30 @@ module.exports = {
       .setTitle(`Você encontrou um ${monstroEncontrado} nivel ${monstroLevel}!`)
       .setDescription('Você encontrou um Goblin, deseja lutar?')
       .setThumbnail(monstroInfo.icon)
-      .addFields(
-        {
-          name: `${monstroEncontrado}`,
-          value: `<:lvl:1065418053170499698> **Nível:** \`${monstroLevel}\` \n<:hp:1065001128758100108> **Vida:** \`${monstroHpMax}\`\n<:armor:1065004216835387492> **Armadura:** \`${monstroArmor}\`\n<:dmg:1065003206968615084> **Dano:** \`${monstroDano}\``,
-          inline: true,
-        },
-      );
+      .addFields({
+        name: `${monstroEncontrado}`,
+        value: `<:lvl:1065418053170499698> **Nível:** \`${monstroLevel}\` \n<:hp:1065001128758100108> **Vida:** \`${monstroHpMax}\`\n<:armor:1065004216835387492> **Armadura:** \`${monstroArmor}\`\n<:dmg:1065003206968615084> **Dano:** \`${monstroDano}\``,
+        inline: true,
+      });
 
     const RPG = await RpgStats.findOne({
       id: interaction.user.id,
     });
 
     if (!RPG) {
-      await interaction.reply({
-        embeds: [monstro], content: `${interaction.user}`, components: [Lutar], fetchReply: true,
-      })
+      await interaction
+        .reply({
+          embeds: [monstro],
+          content: `${interaction.user}`,
+          components: [Lutar],
+          fetchReply: true,
+        })
         .then(async (message) => {
           const filtro = (i) => i.user.id === interaction.user.id;
-          const coletor = await message.createMessageComponentCollector({ filtro, time: 600000 });
+          const coletor = await message.createMessageComponentCollector({
+            filtro,
+            time: 600000,
+          });
 
           coletor.on('collect', async (collected) => {
             const valor = collected.customId;
@@ -240,7 +256,9 @@ module.exports = {
 
               const aceito = new Discord.EmbedBuilder()
                 .setTitle('Você aceitou a luta!')
-                .setDescription(`Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `)
+                .setDescription(
+                  `Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `,
+                )
                 .setThumbnail(monstroInfo.icon)
                 .addFields(
                   {
@@ -254,7 +272,6 @@ module.exports = {
                     inline: true,
                   },
                   {
-
                     name: 'Seus Status',
                     value: `**Vida:** \`${user.hpatual}/${user.hpmax}\`\n${vidaPlayer}\n**Mana**\`${playerManaAtual}/${playerManaMax}\`\n${manaPlayer}`,
                     inline: true,
@@ -279,16 +296,20 @@ module.exports = {
               // }))
               // console.log(monstroHpAtual)
 
-              await interaction.editReply({ embeds: [aceito], content: `${interaction.user}`, components: [lutando] });
+              await interaction.editReply({
+                embeds: [aceito],
+                content: `${interaction.user}`,
+                components: [lutando],
+              });
             } else if (valor === 'ataque') {
               if (monstroArmor >= 10 && monstroArmor < 19) {
-                monstroArmor = 0.10;
+                monstroArmor = 0.1;
               }
               if (monstroArmor >= 20 && monstroArmor < 29) {
-                monstroArmor = 0.20;
+                monstroArmor = 0.2;
               }
               if (monstroArmor >= 30 && monstroArmor < 39) {
-                monstroArmor = 0.30;
+                monstroArmor = 0.3;
               }
               if (monstroArmor <= 9) {
                 monstroArmor = 0.09;
@@ -413,7 +434,9 @@ module.exports = {
 
               const atk1 = new Discord.EmbedBuilder()
                 .setTitle(`Você atacou e causou ${dmg} de dano em ${monstroEncontrado}!`)
-                .setDescription(`Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `)
+                .setDescription(
+                  `Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `,
+                )
                 .setThumbnail(monstroInfo.icon)
                 .addFields(
                   {
@@ -427,7 +450,6 @@ module.exports = {
                     inline: true,
                   },
                   {
-
                     name: 'Seus Status',
                     value: `**Vida:** \`${user.hpatual}/${user.hpmax}\`\n${vidaPlayer2}\n**Mana:** \`${playerManaAtual}/${playerManaMax}\`\n${manaPlayer2}`,
                     inline: true,
@@ -438,22 +460,36 @@ module.exports = {
               if (monstroHpAtual <= 0) {
                 const termino = new Discord.EmbedBuilder()
                   .setTitle(`Parabéns, você venceu um ${monstroEncontrado}.`)
-                  .setDescription(`Você ganhou a luta e recebeu: \`${xp}\` EXP e \`${moeda}\` Moedas de prata.\nOs seus status atuais são:\n **Vida:** \`${user.hpatual}\``);
+                  .setDescription(
+                    `Você ganhou a luta e recebeu: \`${xp}\` EXP e \`${moeda}\` Moedas de prata.\nOs seus status atuais são:\n **Vida:** \`${user.hpatual}\``,
+                  );
 
-                return interaction.editReply({ embeds: [atk1], content: `${interaction.user}`, components: [] }),
-                setTimeout(() => { interaction.editReply({ embeds: [termino], content: `${interaction.user}`, components: [] }); }, 2000);
+                return (
+                  interaction.editReply({
+                    embeds: [atk1],
+                    content: `${interaction.user}`,
+                    components: [],
+                  }),
+                  setTimeout(() => {
+                    interaction.editReply({
+                      embeds: [termino],
+                      content: `${interaction.user}`,
+                      components: [],
+                    });
+                  }, 2000)
+                );
               }
 
               // INIMIGO ATACANDO
 
               if (playerArmor >= 10 && playerArmor < 19) {
-                playerArmor = 0.10;
+                playerArmor = 0.1;
               }
               if (playerArmor >= 20 && playerArmor < 29) {
-                playerArmor = 0.20;
+                playerArmor = 0.2;
               }
               if (playerArmor >= 30 && playerArmor < 39) {
-                playerArmor = 0.30;
+                playerArmor = 0.3;
               }
               if (playerArmor <= 9) {
                 playerArmor = 0.09;
@@ -537,7 +573,9 @@ module.exports = {
 
               const def = new Discord.EmbedBuilder()
                 .setTitle(`${monstroEncontrado} te atacou e causou ${dmgPlayer} de dano!`)
-                .setDescription(`Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `)
+                .setDescription(
+                  `Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `,
+                )
                 .setThumbnail(monstroInfo.icon)
                 .addFields(
                   {
@@ -551,7 +589,6 @@ module.exports = {
                     inline: true,
                   },
                   {
-
                     name: 'Seus Status',
                     value: `**Vida:** \`${user.hpatual}/${user.hpmax}\`\n${vidaPlayer3}\n**Mana:** \`${playerManaAtual}/${playerManaMax}\`\n${manaPlayer3}`,
                     inline: true,
@@ -559,23 +596,51 @@ module.exports = {
                 )
                 .setFooter({ text: `Turno: ${monstroEncontrado}` });
 
-              await interaction.editReply({ embeds: [atk1], content: `${interaction.user}`, components: [] });
+              await interaction.editReply({
+                embeds: [atk1],
+                content: `${interaction.user}`,
+                components: [],
+              });
 
-              setTimeout(() => { interaction.editReply({ embeds: [def], content: `${interaction.user}`, components: [] }); }, 2000);
+              setTimeout(() => {
+                interaction.editReply({
+                  embeds: [def],
+                  content: `${interaction.user}`,
+                  components: [],
+                });
+              }, 2000);
 
               if (user.hpatual <= 0) {
-                return await interaction.editReply({ embeds: [def], content: `${interaction.user}`, components: [] }),
-                setTimeout(() => { interaction.editReply({ embeds: [derrota], content: `${interaction.user}`, components: [] }); }, 2000),
-                await UsersRPG.findOneAndUpdate({
-                  id: interaction.user.id,
-                }, { $set: { vivo: false } });
+                return (
+                  await interaction.editReply({
+                    embeds: [def],
+                    content: `${interaction.user}`,
+                    components: [],
+                  }),
+                  setTimeout(() => {
+                    interaction.editReply({
+                      embeds: [derrota],
+                      content: `${interaction.user}`,
+                      components: [],
+                    });
+                  }, 2000),
+                  await UsersRPG.findOneAndUpdate(
+                    {
+                      id: interaction.user.id,
+                    },
+                    { $set: { vivo: false } },
+                  )
+                );
               }
 
               // Player Atacando 2
 
-              await UsersRPG.findOneAndUpdate({
-                id: interaction.user.id,
-              }, { $set: { hpatual: user.hpatual } });
+              await UsersRPG.findOneAndUpdate(
+                {
+                  id: interaction.user.id,
+                },
+                { $set: { hpatual: user.hpatual } },
+              );
 
               const player = await UsersRPG.findOne({
                 id: interaction.user.id,
@@ -583,7 +648,9 @@ module.exports = {
 
               const atk2 = new Discord.EmbedBuilder()
                 .setTitle('Sua vez, ataque novamente!')
-                .setDescription(`Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `)
+                .setDescription(
+                  `Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `,
+                )
                 .setThumbnail(monstroInfo.icon)
                 .addFields(
                   {
@@ -597,7 +664,6 @@ module.exports = {
                     inline: true,
                   },
                   {
-
                     name: 'Seus Status',
                     value: `**Vida:** \`${player.hpatual}/${player.hpmax}\`\n${vidaPlayer3}\n\`${playerManaAtual}/${playerManaMax}\``,
                     inline: true,
@@ -605,7 +671,13 @@ module.exports = {
                 )
                 .setFooter({ text: `Turno: ${interaction.user.username}` });
 
-              setTimeout(() => { interaction.editReply({ embeds: [atk2], content: `${interaction.user}`, components: [lutando] }); }, 4000);
+              setTimeout(() => {
+                interaction.editReply({
+                  embeds: [atk2],
+                  content: `${interaction.user}`,
+                  components: [lutando],
+                });
+              }, 4000);
             }
           });
         });
@@ -626,7 +698,6 @@ module.exports = {
             inline: true,
           },
           {
-
             name: 'Seus Status',
             value: `**Vida:** \`${user.hpatual}/${user.hpmax}\`\n${hpPlayer}\n\`${playerManaAtual}/${playerManaMax}\``,
             inline: true,
@@ -634,12 +705,19 @@ module.exports = {
         )
         .setFooter({ text: RPG.turno });
 
-      await interaction.reply({
-        embeds: [already], content: `${interaction.user}`, components: [lutando], fetchReply: true,
-      })
+      await interaction
+        .reply({
+          embeds: [already],
+          content: `${interaction.user}`,
+          components: [lutando],
+          fetchReply: true,
+        })
         .then(async (message) => {
           const filtro = (i) => i.user.id === interaction.user.id;
-          const coletor = await message.createMessageComponentCollector({ filtro, time: 600000 });
+          const coletor = await message.createMessageComponentCollector({
+            filtro,
+            time: 600000,
+          });
 
           coletor.on('collect', async (collected) => {
             const valor = collected.customId;
@@ -647,13 +725,13 @@ module.exports = {
 
             if (valor === 'ataque') {
               if (monstroArmor >= 10 && monstroArmor < 19) {
-                monstroArmor = 0.10;
+                monstroArmor = 0.1;
               }
               if (monstroArmor >= 20 && monstroArmor < 29) {
-                monstroArmor = 0.20;
+                monstroArmor = 0.2;
               }
               if (monstroArmor >= 30 && monstroArmor < 39) {
-                monstroArmor = 0.30;
+                monstroArmor = 0.3;
               }
               if (monstroArmor <= 9) {
                 monstroArmor = 0.09;
@@ -696,12 +774,18 @@ module.exports = {
                 vidaMonstro = hpMonstro10;
               }
               if (monstroHpAtual <= 0) {
-                return await interaction.editReply({ embeds: [termino], content: `${interaction.user}`, components: [] });
+                return await interaction.editReply({
+                  embeds: [termino],
+                  content: `${interaction.user}`,
+                  components: [],
+                });
               }
 
               const aceito = new Discord.EmbedBuilder()
                 .setTitle(`Você atacou e causou **${dmg}** em **${monstroEncontrado}!`)
-                .setDescription(`Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `)
+                .setDescription(
+                  `Você está lutando contra um ${monstroEncontrado} nivel ${monstroLevel} `,
+                )
                 .setThumbnail(rawMonstros[0].icon)
                 .addFields(
                   {
@@ -715,7 +799,6 @@ module.exports = {
                     inline: true,
                   },
                   {
-
                     name: 'Seus Status',
                     value: `**Vida:** \`${user.hpatual}/${user.hpmax}\`\n${hpPlayer}\n\`${playerManaAtual}/${playerManaMax}\``,
                     inline: true,
@@ -723,7 +806,11 @@ module.exports = {
                 )
                 .setFooter({ text: turno });
 
-              await interaction.editReply({ embeds: [aceito], content: `${interaction.user}`, components: [lutando] });
+              await interaction.editReply({
+                embeds: [aceito],
+                content: `${interaction.user}`,
+                components: [lutando],
+              });
             }
           });
         });

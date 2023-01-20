@@ -11,7 +11,7 @@ const client = require('..');
  * Ele também registra uma mensagem no console para indicar que o bot está online.
  */
 client.on('ready', () => {
-  const { user, ws } = client;
+  const { user } = client;
   /**
    * @function setInterval
    * Ele define um intervalo para atualizar a atividade do bot para exibir o ping atual em milissegundos a cada 5 segundos.
@@ -39,9 +39,7 @@ client.on('ready', () => {
       useUnifiedTopology: true,
     })
     .then(() => {
-      console.log(
-        chalk.green('[Sucesso] Conectado com a banco de dados (mongodb).'),
-      );
+      console.log(chalk.green('[Sucesso] Conectado com a banco de dados (mongodb).'));
     })
     .catch((err) => {
       console.log('[Error] Não conectei com o banco de dados (mongodb). ', err);
