@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { StringSelectMenuBuilder, ButtonBuilder } = require('discord.js');
+const { StringSelectMenuBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 const { ApplicationCommandType } = require('discord.js');
 const UsersRPG = require('../../Schemas/UserRPG');
@@ -38,23 +38,38 @@ module.exports = {
         .setTimestamp();
 
       const VikingBtn = new Discord.ActionRowBuilder().addComponents(
-        new Discord.ButtonBuilder().setCustomId('confirmaViking').setLabel('Confirmar').setStyle(3),
+        new Discord.ButtonBuilder()
+          .setCustomId('confirmaViking')
+          .setLabel('Confirmar')
+          .setStyle(ButtonStyle.Success),
       );
 
       const ArqueiroBtn = new Discord.ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('confirmaArqueiro').setLabel('Confirmar').setStyle(3),
+        new ButtonBuilder()
+          .setCustomId('confirmaArqueiro')
+          .setLabel('Confirmar')
+          .setStyle(ButtonStyle.Success),
       );
 
       const SamuraiBtn = new Discord.ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('confirmaSamurai').setLabel('Confirmar').setStyle(3),
+        new ButtonBuilder()
+          .setCustomId('confirmaSamurai')
+          .setLabel('Confirmar')
+          .setStyle(ButtonStyle.Success),
       );
 
       const PaladinBtn = new Discord.ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('confirmaPaladin').setLabel('Confirmar').setStyle(3),
+        new ButtonBuilder()
+          .setCustomId('confirmaPaladin')
+          .setLabel('Confirmar')
+          .setStyle(ButtonStyle.Success),
       );
 
       const DemonBtn = new Discord.ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('confirmaDemon').setLabel('Confirmar').setStyle(3),
+        new ButtonBuilder()
+          .setCustomId('confirmaDemon')
+          .setLabel('Confirmar')
+          .setStyle(ButtonStyle.Success),
       );
 
       const classesOptions = rawClasses.map((rpgClass) => ({
